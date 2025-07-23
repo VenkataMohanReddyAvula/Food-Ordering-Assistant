@@ -1,0 +1,23 @@
+            const message = userInput.value.trim();
+            if (message === '') return;
+            appendMessage('user', message);
+            userInput.value = ''; // Clear input
+            try {
+                const response = await fetch('http://127.0.0.1:5000/chat', { // Adjust URL
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: message })
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                appendMessage('bot', data.response);
+            } catch (error) {
+                console.error('Error communicating with chatbot:', error);
+                appendMessage('bot', 'Sorry, I am having trouble connecting right now. Please try again later.');
+            }
+        }
+    </script>
+</body>
+</html>
